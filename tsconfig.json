@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+		"module": "nodenext",
+		"target": "ES2024",
+		"outDir": "out",
+		"lib": [
+			"ES2024"
+		],
+		"sourceMap": true,
+		"rootDir": "src",
+		"strict": true
+	},
+	"exclude": [
+		"node_modules",
+		".vscode-test"
+	],
+	"esModuleInterop": true,
+	"typeRoots": ["types", "node_modules/@types"]
+}

@@ -1,0 +1,32 @@
+{
+  "name": "pmsound",
+  "version": "0.0.1",
+  "description": "Play, convert, and compile music for the Pokémon mini",
+  "main": "index.js",
+  "scripts": {
+    "prebuild": "node -p \"'export const LIB_VERSION = ' + JSON.stringify(require('./package.json').version) + ';'\" > src/version.ts",
+    "build": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run build",
+    "test": "node ./test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/logicplace/pmsound-js.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/logicplace/pmsound-js/issues"
+  },
+  "homepage": "https://github.com/logicplace/pmsound-js#readme",
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "json5": "^2.2.3",
+    "typescript": "^5.8.3"
+  },
+  "optionalDependencies": {
+    "@browserbox/speaker": "^1.0.1",
+    "commander": "^13.1.0"
+  }
+}
