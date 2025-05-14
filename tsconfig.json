@@ -12,7 +12,8 @@
 	},
 	"exclude": [
 		"node_modules",
-		".vscode-test"
+		".vscode-test",
+		"index.ts"
 	],
 	"esModuleInterop": true,
 	"typeRoots": ["types", "node_modules/@types"]
