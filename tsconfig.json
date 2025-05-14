@@ -8,13 +8,15 @@
 		],
 		"sourceMap": true,
 		"rootDir": "src",
-		"strict": true
+		"strict": true,
+		"composite": true,
+		"typeRoots": ["types", "node_modules/@types"]
 	},
 	"exclude": [
 		"node_modules",
 		".vscode-test",
-		"index.ts"
+		"index.ts",
+		"out"
 	],
-	"esModuleInterop": true,
-	"typeRoots": ["types", "node_modules/@types"]
+	"esModuleInterop": true
 }

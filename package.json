@@ -6,7 +6,7 @@
   "scripts": {
     "prebuild": "node -p \"'export const LIB_VERSION = ' + JSON.stringify(require('./package.json').version) + ';'\" > src/version.ts",
     "build": "tsc -p ./",
-    "postbuild": "node -e \"require('node:fs').copyFileSync('out/index.js', 'index.js')\"",
+    "postbuild": "node -e \"const fs = require('node:fs'); const d = fs.readFileSync('out/index.js', {encoding:'utf8'}); fs.writeFileSync('index.js', d.replace(/\\.\\//g, './out/'))\"",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run build",
     "test": "node ./test/test.js"
