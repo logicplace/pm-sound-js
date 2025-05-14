@@ -2,7 +2,9 @@
 
 ## CLI
 
-To see usage use: `node ./out/index.js -h`
+To see usage use: `npx pmsound -h`
+
+If you're running from this repo use `npx . -h` instead.
 
 The CLI works via subcommands, explained by sections below.
 
@@ -11,7 +13,7 @@ The CLI works via subcommands, explained by sections below.
 Compile a `.pmmusic` file.
 
 ```sh
-node ./out/index.js compile my.pmmusic -o build -a --pmas
+npx pmsound compile my.pmmusic -o build -a --pmas
 ```
 
 * `-o`/`--out` - specify output file or directory
@@ -27,7 +29,7 @@ node ./out/index.js compile my.pmmusic -o build -a --pmas
 Play a sound from a `.pmmusic` file
 
 ```sh
-node ./out/index.js compile my.pmmusic nameOfSound
+npx pmsound compile my.pmmusic nameOfSound
 ```
 
 * `-s`/`--sound` - pick the sound engine to use
