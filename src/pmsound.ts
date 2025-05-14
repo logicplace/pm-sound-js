@@ -38,9 +38,9 @@ program.parse()
 function readAnd(fun: (pmmusic: PMMusic, opts: any)=>void) {
 	return function (this: Command, fn: string) {
 		const cmd = this
-		fs.readFile(fn, {encoding: "utf8"}, (err, data) => {
+		fs.readFile(fn, {encoding: "utf8"}, async (err, data) => {
 			if (err) throw err;
-			const pmmusic = parse(data, getFile)
+			const pmmusic = await parse(data, getFile)
 			fun.call(cmd, pmmusic, cmd.opts())
 		})
 	}
@@ -65,7 +65,7 @@ function cmdCompile(pmmusic: PMMusic, args: {all: boolean, bgm: string[], sfx: s
 }
 
 function getFile(fn: string) {
-	fn = path.resolve(__dirname, fn)
+	fn = path.resolve(fn)
 	if (!path.extname(fn)) fn += ".pmmusic"
 	return fs.readFileSync(fn, {encoding: "utf8"})
 }

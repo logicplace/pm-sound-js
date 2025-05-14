@@ -98,7 +98,7 @@ enum Open {
 	DESCRIPTION
 }
 
-export function parse(text: string, textFetcher?: (fn:string)=>string, _out?: ast.PMMusic) {
+export async function parse(text: string, textFetcher?: (fn:string)=>Promise<string>|string, _out?: ast.PMMusic) {
 	text += "\n"
 	const out = _out ?? new ast.PMMusic()
 	let open = Open.None, name = "", body = ""
@@ -122,8 +122,8 @@ export function parse(text: string, textFetcher?: (fn:string)=>string, _out?: as
 						throw new ParseError("INCLUDE not supported")
 					const filename = dirArgs.trim()
 					if (out.includes.includes(filename))
-						throw new ParseError(`recurse INCLUDE "${filename}" at ${lineChar(errCtx)}`)
-					parse(textFetcher(filename), textFetcher, out)
+						throw new ParseError(`recursive INCLUDE "${filename}" at ${lineChar(errCtx)}`)
+					parse(await textFetcher(filename), textFetcher, out)
 					break
 				case "TITLE":
 					out.title = dirArgs.trim()

@@ -6,7 +6,7 @@
   "scripts": {
     "prebuild": "node -p \"'export const LIB_VERSION = ' + JSON.stringify(require('./package.json').version) + ';'\" > src/version.ts",
     "build": "tsc -p ./",
-    "postbuild": "cat out/index.js > index.js",
+    "postbuild": "node -e \"require('node:fs').copyFileSync('out/index.js', 'index.js')\"",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run build",
     "test": "node ./test/test.js"
