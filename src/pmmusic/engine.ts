@@ -47,6 +47,7 @@ export class PMMusicEngine extends Player {
 	bgmPvt: number = 0
 	bgmVolTable: number[]
 	bgmLoop: {[key: number]: LoopInfo}
+	bgmOnEnd?: ()=>void
 
 	// SFX Data
 	sfxData: PMMusicCommand[]
@@ -58,6 +59,7 @@ export class PMMusicEngine extends Player {
 	sfxPvt: number = 0
 	sfxVolTable: number[]
 	sfxLoop: {[key: number]: LoopInfo}
+	sfxOnEnd?: ()=>void
 
 	//
 	playdec: number = 36
@@ -129,12 +131,15 @@ export class PMMusicEngine extends Player {
 		this.pm.write2Reg(0x3a, mtime)
 	}
 
-	public playBGM(data: PMMusicCommand[][]) {
+	public playBGM(data: PMMusicCommand[][], onEnd?: ()=>void) {
 		this.bgmPats = data
 		this.bgmPatOffset = 0
 		this.bgmData = data[0]
 		this.bgmDataOffset = 0
 		this.bgmLoop = {}
+		if (this.bgmOnEnd)
+			this.bgmOnEnd()
+		this.bgmOnEnd = onEnd
 
 		this.audEna &= 0x02
 		this.audEna |= 0x01
@@ -150,6 +155,8 @@ export class PMMusicEngine extends Player {
 
 	public stopBGM() {
 		this.bgmData = []
+		if (this.bgmOnEnd)
+			this.bgmOnEnd()
 		this.audEna &= 0x02
 		if (!this.audEna) {
 			this.pm.writeReg(0x38, 0)  // Tmr2 Ctrl
@@ -157,10 +164,17 @@ export class PMMusicEngine extends Player {
 		}
 	}
 
-	public playSFX(data: PMMusicCommand[]) {
+	public isPlayingBGM() {
+		return !!this.bgmData.length
+	}
+
+	public playSFX(data: PMMusicCommand[], onEnd?: ()=>void) {
 		this.sfxData = data
 		this.sfxDataOffset = 0
 		this.sfxLoop = {}
+		if (this.sfxOnEnd)
+			this.sfxOnEnd()
+		this.sfxOnEnd = onEnd
 
 		this.audEna &= 0x01
 		this.audEna |= 0x02
@@ -174,11 +188,17 @@ export class PMMusicEngine extends Player {
 
 	public stopSFX() {
 		this.sfxData = []
+		if (this.sfxOnEnd)
+			this.sfxOnEnd()
 		this.audEna &= 0x01
 		if (!this.audEna) {
 			this.pm.writeReg(0x38, 0)  // Tmr2 Ctrl
 			this.pm.writeReg(0x48, 0)  // Tmr3 Ctrl
 		}
+	}
+
+	public isPlayingSFX() {
+		return !!this.sfxData.length
 	}
 
 	public irq() {
@@ -351,5 +371,13 @@ export class PMMusicEngine extends Player {
 		}
 
 		return !!this.playdec
+	}
+
+	public makeEndCommand() {
+		return new PMMusicCommand({
+			wait: 1,
+			flags: FLAG_VOL | FLAG_END,
+			volume: 0,
+		})
 	}
 }
