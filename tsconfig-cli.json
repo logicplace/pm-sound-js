@@ -18,6 +18,5 @@
 		".vscode-test",
 		"index.ts",
 		"out",
-		"src/pmsound.ts"
 	],
 }

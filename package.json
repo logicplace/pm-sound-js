@@ -9,7 +9,9 @@
     "postbuild": "node -e \"const fs = require('node:fs'); const d = fs.readFileSync('out/index.js', {encoding:'utf8'}); fs.writeFileSync('index.js', d.replace(/\\.\\//g, './out/'))\"",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run build",
-    "test": "node ./test/test.js"
+    "test": "node ./test/test.js",
+    "prebuildcli": "node run prebuild",
+    "buildcli": "tsc -p ./tsconfig-cli.json"
   },
   "repository": {
     "type": "git",
